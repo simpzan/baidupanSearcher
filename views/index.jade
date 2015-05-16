@@ -1,5 +1,30 @@
 extends layout
 
+
 block content
   h1= title
-  p Welcome to #{title}
+  input(id='input', placeholder='请输入关键字', autofocus='')
+  button(id='search') 搜索
+  p
+    |注意：搜索结果中的百度网盘链接，有的可能已经无效，换一个链接就好了。
+    |一般会有很多链接，总有一个有效的。
+
+  script(type='text/javascript').
+    var search = document.querySelector('#search');
+    search.addEventListener('click', function () {
+      searchWithGoogle();
+    });
+    var input = document.querySelector('#input');
+    input.addEventListener('keydown', function (event) {
+      if (event.keyCode == 13) { searchWithGoogle(); }
+    });
+
+    var searchWithGoogle = function() {
+      var keyword = input.value;
+      if (keyword.trim() === '') return;
+
+      var searchEngineTemplate = 'http://www.gfsoso.net/?q={{keyword}}+site%3Apan.baidu.com';
+      var url = searchEngineTemplate.replace('{{keyword}}', encodeURIComponent(keyword));
+      console.log(url);
+      window.open(url, '_self');
+    };
